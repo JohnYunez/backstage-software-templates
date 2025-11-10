@@ -1,0 +1,15 @@
+site_name: ${{values.component_name}}
+site_description: Documentation for the Python Flask API Application: ${{values.component_name}}
+site_author: John Yunez
+repo_url: https://github.com/JohnYunez/${{values.component_name}}
+edit_uri: edit/master/docs/
+docs_dir: docs
+
+plugins:
+  - techdocs-core
+
+nav:
+  - Home: index.md
+  - Architecture: architecture.md
+  - Usage: usage.md
+  - Development: development.md

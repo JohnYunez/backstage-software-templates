@@ -1,0 +1,12 @@
+test file for parameters/values
+
+App's name: 
+${{values.component_name}}
+
+App's env : 
+${{values.environment}}
+
+API's path: 
+${{values.api_path}}
+
+${{values.component_name}}-${{values.environment}}
