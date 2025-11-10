@@ -40,8 +40,9 @@ jobs:
         name: Update charts/values/image.tag tag with new dockerhub image
         shell: bash
         run: |
+          echo ${{ '${{ needs.ci.outputs.image_version }}' }}
           pip install yq
-          yq -Yi '.image.tag = "${{ needs.ci.outputs.image_version }}"' ./charts/values-${{values.environment}}.yaml
+          yq -Yi '.image.tag = "${{ '${{ needs.ci.outputs.image_version }}' }}"' ./charts/values-${{values.environment}}.yaml
       -
         name: Commit changes to charts/values/image.tag
         uses: stefanzweifel/git-auto-commit-action@v4

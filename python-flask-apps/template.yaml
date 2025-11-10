@@ -73,6 +73,7 @@ spec:
         repoUrl: github.com?owner=YuneZoft&repo=${{ parameters.component_name }}
 #        defaultBranch: 'main'
         protectDefaultBranch: false
+        repoVisibility: public
 
     - id: register
       name: Register
