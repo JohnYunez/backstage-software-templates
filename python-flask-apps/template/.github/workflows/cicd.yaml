@@ -37,7 +37,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
       -
-        name: Install pip and yq
+        name: Install pip and yq & Update charts/values/image.tag tag with new dockerhub image
         shell: bash
         run: |
           sudo apt update -y
@@ -45,10 +45,6 @@ jobs:
           sudo python3 -m venv venv
           source venv/bin/activate
           sudo pip install yq
-      -
-        name: Update charts/values/image.tag tag with new dockerhub image
-        shell: bash
-        run: |
           echo ${{ '${{ needs.ci.outputs.image_version }}' }}
           yq -Yi '.image.tag = "${{ '${{ needs.ci.outputs.image_version }}' }}"' ./charts/values-${{values.environment}}.yaml
       -
