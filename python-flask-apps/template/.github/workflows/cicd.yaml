@@ -37,15 +37,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
       -
-        name: Update charts/values/image.tag tag with new dockerhub image
+        name: Install pip and yq
         shell: bash
         run: |
-          echo ${{ '${{ needs.ci.outputs.image_version }}' }}
           sudo apt update -y
           sudo apt install -y python3-venv python3-pip
           sudo python3 -m venv venv
           source venv/bin/activate
           sudo pip install yq
+      -
+        name: Update charts/values/image.tag tag with new dockerhub image
+        shell: bash
+        run: |
+          echo ${{ '${{ needs.ci.outputs.image_version }}' }}
           yq -Yi '.image.tag = "${{ '${{ needs.ci.outputs.image_version }}' }}"' ./charts/values-${{values.environment}}.yaml
       -
         name: Commit changes to charts/values/image.tag
@@ -61,17 +65,38 @@ jobs:
           sudo curl -sSLk -o /usr/local/bin/argocd https://argocd-server.argocd/download/argocd-linux-amd64
           sudo chmod +x /usr/local/bin/argocd 
       -
-        name: Argocd repo add + app create
-        shell: bash
-        run: |
-          argocd repo add https://github.com/YuneZoft/${{values.component_name}} --project default --name ${{values.component_name}}
-          argocd app create ${{values.component_name}} --repo https://github.com/JohnYunez/${{values.component_name}} --path charts --dest-namespace ${{values.component_name}}-${{values.environment}} --dest-server https://kubernetes.default.svc
-      -
-        name: Argocd app sync
+        name: Argocd login
         shell: bash
         run: |
           argocd login argocd-server.argocd \
             --insecure \
             --username ${{ vars.ARGOCD_USERNAME }} \
             --password ${{ secrets.ARGOCD_PASSWORD }}
+      -
+        name: Argocd repo add
+        shell: bash
+        run: |
+          argocd repo add \
+            https://github.com/YuneZoft/${{values.component_name}} \
+            --project default \
+            --name ${{values.component_name}}
+          argocd app create ${{values.component_name}} \
+            --repo https://github.com/YuneZoft/${{values.component_name}} 
+            --path charts 
+            --dest-namespace ${{values.component_name}}-${{values.environment}} 
+            --dest-server https://kubernetes.default.svc
+          argocd app sync ${{values.component_name}}
+      -
+        name: Argocd app create
+        shell: bash
+        run: |
+          argocd app create ${{values.component_name}} \
+            --repo https://github.com/YuneZoft/${{values.component_name}} 
+            --path charts 
+            --dest-namespace ${{values.component_name}}-${{values.environment}} 
+            --dest-server https://kubernetes.default.svc
+      -
+        name: Argocd app sync
+        shell: bash
+        run: |
           argocd app sync ${{values.component_name}}
