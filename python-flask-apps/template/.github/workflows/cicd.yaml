@@ -64,7 +64,7 @@ jobs:
         name: Argocd repo add + app create
         shell: bash
         run: |
-          argocd repo add https://github.com/JohnYunez/${{values.component_name}} --project default --name ${{values.component_name}}
+          argocd repo add https://github.com/YuneZoft/${{values.component_name}} --project default --name ${{values.component_name}}
           argocd app create ${{values.component_name}} --repo https://github.com/JohnYunez/${{values.component_name}} --path charts --dest-namespace ${{values.component_name}}-${{values.environment}} --dest-server https://kubernetes.default.svc
       -
         name: Argocd app sync
