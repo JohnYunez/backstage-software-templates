@@ -55,23 +55,15 @@ jobs:
           branch: master
           file_pattern: "charts/python-app/values.yaml"
       -
-        name: Install Argocd
+        name: Install Argocd + Argocd login + repo add +  app create + app sync
         shell: bash
         run: |
           sudo curl -sSLk -o /usr/local/bin/argocd https://argocd-server.argocd/download/argocd-linux-amd64
           sudo chmod +x /usr/local/bin/argocd 
-      -
-        name: Argocd login
-        shell: bash
-        run: |
           argocd login argocd-server.argocd \
             --insecure \
             --username ${{ vars.ARGOCD_USERNAME }} \
             --password ${{ secrets.ARGOCD_PASSWORD }}
-      -
-        name: Argocd repo add
-        shell: bash
-        run: |
           argocd repo add \
             https://github.com/YuneZoft/${{values.component_name}} \
             --project default \
@@ -82,17 +74,4 @@ jobs:
             --dest-namespace ${{values.component_name}}-${{values.environment}} 
             --dest-server https://kubernetes.default.svc
           argocd app sync ${{values.component_name}}
-      -
-        name: Argocd app create
-        shell: bash
-        run: |
-          argocd app create ${{values.component_name}} \
-            --repo https://github.com/YuneZoft/${{values.component_name}} 
-            --path charts 
-            --dest-namespace ${{values.component_name}}-${{values.environment}} 
-            --dest-server https://kubernetes.default.svc
-      -
-        name: Argocd app sync
-        shell: bash
-        run: |
-          argocd app sync ${{values.component_name}}
+
