@@ -41,7 +41,11 @@ jobs:
         shell: bash
         run: |
           echo ${{ '${{ needs.ci.outputs.image_version }}' }}
-          pip install yq
+          sudo apt update -y
+          sudo apt install -y python3-venv python3-pip
+          sudo python3 -m venv venv
+          source venv/bin/activate
+          sudo pip install yq
           yq -Yi '.image.tag = "${{ '${{ needs.ci.outputs.image_version }}' }}"' ./charts/values-${{values.environment}}.yaml
       -
         name: Commit changes to charts/values/image.tag
