@@ -61,24 +61,30 @@ jobs:
           sudo curl -sSLk -o /usr/local/bin/argocd https://argocd-server.argocd/download/argocd-linux-amd64
           sudo chmod +x /usr/local/bin/argocd 
 
+          repo = "https://github.com/YuneZoft/${{values.component_name}}.git"
           argocd login argocd-server.argocd \
             --insecure \
             --username ${{ '${{ vars.ARGOCD_USERNAME }}' }} \
             --password ${{ '${{ secrets.ARGOCD_PASSWORD }}' }}
 
-          argocd repo add \
-            https://github.com/YuneZoft/${{values.component_name}} \
-            --project default \
-            --name ${{values.component_name}}
+          argocd repo list | grep -q $repo \
+            || argocd repo add $repo \
+                --project default \
+                --name ${{values.component_name}}
 
-          argocd app create ${{values.component_name}} \
-            --repo https://github.com/YuneZoft/${{values.component_name}} \
+          argocd app get ${{values.component_name}} \
+          || argocd app create ${{values.component_name}} \
+            --repo $repo \
             --path charts \
             --revision master \
             --dest-namespace ${{values.component_name}}-${{values.environment}} \
             --values values-${{values.environment}}.yaml \
             --dest-server https://kubernetes.default.svc \
+            --sync-policy manual \
             --sync-option CreateNamespace=true
 
           argocd app sync ${{values.component_name}}
+
+          argocd app wait ${{values.component_name}} --health --timeout 300
+
 
