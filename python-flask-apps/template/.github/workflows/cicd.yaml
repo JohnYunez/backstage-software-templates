@@ -72,12 +72,12 @@ jobs:
             --name ${{values.component_name}}
 
           argocd app create ${{values.component_name}} \
-            --repo https://github.com/YuneZoft/${{values.component_name}} 
-            --path charts 
-            --revision master
-            --dest-namespace ${{values.component_name}}-${{values.environment}} 
-            --values values-${{values.environment}}.yaml
-            --dest-server https://kubernetes.default.svc
+            --repo https://github.com/YuneZoft/${{values.component_name}} \
+            --path charts \
+            --revision master \
+            --dest-namespace ${{values.component_name}}-${{values.environment}} \
+            --values values-${{values.environment}}.yaml \
+            --dest-server https://kubernetes.default.svc \
             --sync-option CreateNamespace=true
 
           argocd app sync ${{values.component_name}}
