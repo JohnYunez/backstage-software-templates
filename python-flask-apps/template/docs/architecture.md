@@ -9,13 +9,14 @@ This application is a lightweight REST API built with Flask.
 
 ## Service endpoint
 
+To get the url exposed by the load balancer, run:
 ```bash
-kubectlk get svc -n ${{values.component_name}}-${{values.environment}} -o jsonpath={.status.loadBalancer.ingress[0].hostname}
+echo "http://$(kubectl get svc -n ${{values.component_name}}-${{values.environment}} -o jsonpath={.items[].status.loadBalancer.ingress[0].hostname}):5000/api/v1/${{values.api_path}}"
 ```
 
 ## Images
 
-[Dockerhub/johnyunez](https://hub.docker.com/repository/docker/johnyunez/${{values.component_name}})
+[Dockerhub/johnyunez/${{values.component_name}}](https://hub.docker.com/repository/docker/johnyunez/${{values.component_name}})
 
 ## Components
 

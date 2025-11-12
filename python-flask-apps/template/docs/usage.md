@@ -11,8 +11,8 @@
     python app.py
     ```
 3. Access endpoints:
-    - [http://localhost:5000/api/v1/${{values.api_path}}](http://localhost:5000/api/v1/${{values.api_path}})
-    - [http://localhost:5000/api/v1/healthz](http://localhost:5000/api/v1/healthz)
+    - /api/v1/${{values.api_path}}
+    - /api/v1/healthz
 
 ## Environment Variables
 
