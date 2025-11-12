@@ -53,7 +53,7 @@ jobs:
         with:
           commit_message: "github-actions.cd: update image tag to ${{ '${{ needs.ci.outputs.image_version }}' }}"
           branch: master
-          file_pattern: "charts/python-app/values.yaml"
+          file_pattern: "charts/values-${{values.environment}}.yaml"
       -
         name: Install Argocd + Argocd login + repo add +  app create + app sync
         shell: bash
@@ -62,8 +62,8 @@ jobs:
           sudo chmod +x /usr/local/bin/argocd 
           argocd login argocd-server.argocd \
             --insecure \
-            --username ${{ vars.ARGOCD_USERNAME }} \
-            --password ${{ secrets.ARGOCD_PASSWORD }}
+            --username ${{ '${{ vars.ARGOCD_USERNAME }}' }} \
+            --password ${{ '${{ secrets.ARGOCD_PASSWORD }}' }}
           argocd repo add \
             https://github.com/YuneZoft/${{values.component_name}} \
             --project default \
