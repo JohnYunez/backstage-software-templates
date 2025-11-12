@@ -1,5 +1,5 @@
 site_name: ${{values.component_name}}
-site_description: Documentation for the Python Flask API Application: ${{values.component_name}}
+site_description: Documentation for the Python Flask API Application ${{values.component_name}}
 site_author: John Yunez
 repo_url: https://github.com/JohnYunez/${{values.component_name}}
 edit_uri: edit/master/docs/
