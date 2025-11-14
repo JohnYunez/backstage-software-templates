@@ -40,7 +40,7 @@ jobs:
         name: Install pip and yq & Update charts/values/image.tag tag with new dockerhub image
         shell: bash
         run: |
-          # sudo apt update -y
+          sudo apt update -y
           sudo apt install -y python3-venv python3-pip
           sudo python3 -m venv venv
           source venv/bin/activate
