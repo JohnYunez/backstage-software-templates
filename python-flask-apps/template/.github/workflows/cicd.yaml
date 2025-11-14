@@ -61,7 +61,7 @@ jobs:
           sudo curl -sSLk -o /usr/local/bin/argocd https://argocd-server.argocd/download/argocd-linux-amd64
           sudo chmod +x /usr/local/bin/argocd 
 
-          repo = "https://github.com/YuneZoft/${{values.component_name}}.git"
+          repo="https://github.com/YuneZoft/${{values.component_name}}.git"
           argocd login argocd-server.argocd \
             --insecure \
             --username ${{ '${{ vars.ARGOCD_USERNAME }}' }} \
